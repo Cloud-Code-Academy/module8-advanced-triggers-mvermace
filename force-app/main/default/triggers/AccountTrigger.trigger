@@ -17,8 +17,7 @@ For this lesson, students have two options:
 
 Let's dive into the specifics of each operation:
 */
-trigger AccountTrigger on Account (before insert, after insert) {
-
+trigger AccountTrigger on Account (before insert, after insert, after undelete) {
    if (Trigger.isInsert) {
         if (Trigger.isBefore) {
                 AccountHelper.setTypeProspect(Trigger.new);
