@@ -77,9 +77,9 @@ public with sharing class OpportunityHelper {
     }
     
     public static void assignPrimaryContact(List<Opportunity> oppTrigger) {        
-        List<Opportunity> privOppList = new List<Opportunity>(oppTrigger); 
+        //List<Opportunity> privOppList = new List<Opportunity>(oppTrigger); 
         Set<Id> oppAccountIdSet = new Set<Id>();
-        for (Opportunity opp : privOppList) { 
+        for (Opportunity opp : oppTrigger) { 
             if (opp.Primary_Contact__c == null && opp.AccountId != null) {
                 oppAccountIdSet.add(opp.AccountId); 
             }
@@ -90,7 +90,7 @@ public with sharing class OpportunityHelper {
         for (Contact cont : ceoContacts) {
             acctIdToContactIdMap.put(cont.AccountId, cont.Id);
         }
-        for (Opportunity opp2 : privOppList) {
+        for (Opportunity opp2 : oppTrigger) {
             opp2.Primary_Contact__c = acctIdToContactIdMap.get(opp2.AccountId);  
         }
     }

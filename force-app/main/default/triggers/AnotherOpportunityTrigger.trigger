@@ -46,6 +46,7 @@ trigger AnotherOpportunityTrigger on Opportunity (before insert, after insert, b
         }
     }
 
+
     if (Trigger.isUndelete) {
         if (Trigger.isAfter) {      
             OpportunityHelper.processUndeletedOpps(Trigger.newMap);
