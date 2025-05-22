@@ -29,8 +29,10 @@ public class OpportunityTriggerHandler extends TriggerHandler {
     }
 
     public override void beforeDelete() {
-        OpportunityHelper.preventClosedOppDelete(handlerTriggerOld);
-        OpportunityHelper.preventDeleteClosedWonBanking(handlerTriggerOld);
+        OpportunityHelper.preventOppDelete(handlerTriggerOld);
+        //OpportunityHelper.preventClosedOppDelete(handlerTriggerOld);
+        //OpportunityHelper.preventDeleteClosedWonBanking(handlerTriggerOld);
+        
     }
 
     public override void afterDelete() {
