@@ -7,7 +7,7 @@ In this assignment, you will be refactoring and consolidating multiple files to 
    This class contains methods that respond to specific Account trigger events. 
    Update and customize the helper methods as necessary for your specific Account logic.
 
-2. AnotherOpportunityTrigger: 
+2. AnotherOpportunityTrigger: f
    AnotherOpportunityTrigger has multiple issues relating to trigger bad practices. 
    Update this trigger to follow best practices and ensure that it is bulkified. 
 
