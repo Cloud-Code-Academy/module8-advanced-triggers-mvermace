@@ -436,7 +436,7 @@ public with sharing class TriggerBestPracticeTest {
         insert notPrimaryContact;
 
         List<Opportunity> oppsToInsert = new List<Opportunity>();
-        Integer numberOfOpps = 4;  //200
+        Integer numberOfOpps = 200;
         for (Integer i = 0; i < numberOfOpps; i++) {
             Opportunity opp = new Opportunity(
                 Name = 'Test Opportunity ' + i,

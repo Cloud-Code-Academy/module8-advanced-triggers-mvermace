@@ -75,9 +75,7 @@ public with sharing class OpportunityHelper {
         Set<Id> oppAccountIdSet = new Set<Id>();
         for (Opportunity opp : oppNew) { 
                 // Handles conditions for any update
-                System.debug('opp: ' + JSON.serializePretty(opp));
-                System.debug('opp.Primary_Contact__c: ' + opp.Primary_Contact__c);
-                if (opp.Primary_Contact__c == null && opp.Opp_Is_Deleted__c == false) {
+            if (opp.Primary_Contact__c == null && opp.Opp_Is_Deleted__c == false) {
                 oppAccountIdSet.add(opp.AccountId); 
                 contactTitle = 'CEO';  
                        // Handles conditions for refactored AnotherOpportunityTrigger.assignPrimaryContact
@@ -88,10 +86,8 @@ public with sharing class OpportunityHelper {
             } 
         }
         // If no opp:oppNew meets conditions then skip
-        // if (contactTitle != 'empty') {
-        System.debug('oppAccountIdSet: ' + JSON.serializePretty(oppAccountIdSet));
-        System.debug('contactTitle: ' + contactTitle);    
-        List<Contact> listContacts = [SELECT Id, FirstName, LastName, Title, AccountId FROM Contact WHERE AccountId IN :oppAccountIdSet AND Title = :contactTitle];
+        if (contactTitle != 'empty') {
+            List<Contact> listContacts = [SELECT Id, FirstName, LastName, Title, AccountId FROM Contact WHERE AccountId IN :oppAccountIdSet AND Title = :contactTitle];
             Map<String,String> acctIdToContactIdMap = new Map<String,String>();
             for (Contact cont : listContacts) {
                 acctIdToContactIdMap.put(cont.AccountId, cont.Id);
@@ -99,46 +95,8 @@ public with sharing class OpportunityHelper {
             for (Opportunity opp2 : oppNew) {
                 opp2.Primary_Contact__c = acctIdToContactIdMap.get(opp2.AccountId);  
             }
-        // }   
+        }   
     }
- 
-    // // BEFORE_UPDATE    
-    // public static void assignPrimaryContact(List<Opportunity> oppTrigger) {        
-    //     Set<Id> oppAccountIdSet = new Set<Id>();
-    //     for (Opportunity opp : oppTrigger) { 
-    //         if (opp.Primary_Contact__c == null && opp.AccountId != null) {
-    //             oppAccountIdSet.add(opp.AccountId); 
-    //         }
-    //     }
-    //     String contactTitle = 'VP Sales';
-    //     List<Contact> ceoContacts = [SELECT Id, FirstName, LastName, Title, AccountId FROM Contact WHERE AccountId IN :oppAccountIdSet AND Title = :contactTitle];
-    //     Map<String,String> acctIdToContactIdMap = new Map<String,String>();
-    //     for (Contact cont : ceoContacts) {
-    //         acctIdToContactIdMap.put(cont.AccountId, cont.Id);
-    //     }
-    //     for (Opportunity opp2 : oppTrigger) {
-    //         opp2.Primary_Contact__c = acctIdToContactIdMap.get(opp2.AccountId);  
-    //     }
-    // }
-
-    // // BEFORE_UPDATE
-    // public static void setPrimaryContactOnUpdate(List<Opportunity> oppTrigger) {
-    //     Set<Id> oppAccountIdSet = new Set<Id>();
-    //     for (Opportunity opp : oppTrigger) { 
-    //         if (opp.AccountId != null) {
-    //             oppAccountIdSet.add(opp.AccountId); 
-    //         }
-    //     }
-    //     String contactTitle = 'CEO';
-    //     List<Contact> ceoContacts = [SELECT Id, FirstName, LastName, Title, AccountId FROM Contact WHERE AccountId IN :oppAccountIdSet AND Title = :contactTitle];
-    //     Map<String,String> acctIdToContactIdMap = new Map<String,String>();
-    //     for (Contact cont : ceoContacts) {
-    //         acctIdToContactIdMap.put(cont.AccountId, cont.Id);
-    //     }
-    //     for (Opportunity opp2 : oppTrigger) {
-    //         opp2.Primary_Contact__c = acctIdToContactIdMap.get(opp2.AccountId);  
-    //     }
-    // }
 
     // BEFORE_DELETE
     public static void preventOppDelete (List<Opportunity> oppOld) {
