@@ -33,13 +33,15 @@ trigger AnotherOpportunityTrigger on Opportunity (before insert, after insert, b
         if (Trigger.isBefore) {
             OpportunityHelper.setOppType(Trigger.new);
             OpportunityHelper.appendStageNameToDescription(Trigger.new);
-            OpportunityHelper.assignPrimaryContact(Trigger.new);
+            // OpportunityHelper.assignPrimaryContact(Trigger.new);
+            OpportunityHelper.setPrimaryContact(Trigger.new);
         }
     }
 
     if (Trigger.isDelete) {
         if (Trigger.isBefore) {
-            OpportunityHelper.preventClosedOppDelete(Trigger.old);
+            // OpportunityHelper.preventClosedOppDelete(Trigger.old);
+            OpportunityHelper.preventOppDelete(Trigger.old);
         }
         if (Trigger.isAfter) {
             OpportunityHelper.notifyOwnersOpportunityDeleted(Trigger.old);

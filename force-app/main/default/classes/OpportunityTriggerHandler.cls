@@ -25,8 +25,8 @@ public class OpportunityTriggerHandler extends TriggerHandler {
         OpportunityHelper.appendStageNameToDescription(handlerTriggerNew);
         OpportunityHelper.validateOppAmount(handlerTriggerNew);
         OpportunityHelper.setPrimaryContact(handlerTriggerNew);
-        // OpportunityHelper.assignPrimaryContact(handlerTriggerNew);
-        // OpportunityHelper.setPrimaryContactOnUpdate(handlerTriggerNew);
+        //OpportunityHelper.assignPrimaryContact(handlerTriggerNew);
+        //OpportunityHelper.setPrimaryContactOnUpdate(handlerTriggerNew);
     }
 
     public override void beforeDelete() {

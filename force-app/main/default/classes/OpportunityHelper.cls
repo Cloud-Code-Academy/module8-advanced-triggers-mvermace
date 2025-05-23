@@ -75,11 +75,13 @@ public with sharing class OpportunityHelper {
         Set<Id> oppAccountIdSet = new Set<Id>();
         for (Opportunity opp : oppNew) { 
                 // Handles conditions for any update
-            if (opp.Primary_Contact__c == null && opp.AccountId != null) {
+                System.debug('opp: ' + JSON.serializePretty(opp));
+                System.debug('opp.Primary_Contact__c: ' + opp.Primary_Contact__c);
+                if (opp.Primary_Contact__c == null && opp.Opp_Is_Deleted__c == false) {
                 oppAccountIdSet.add(opp.AccountId); 
                 contactTitle = 'CEO';  
                        // Handles conditions for refactored AnotherOpportunityTrigger.assignPrimaryContact
-            } else if (opp.Opp_Is_Deleted__c && opp.AccountId != null) {
+            } else if (opp.Opp_Is_Deleted__c) {
                 oppAccountIdSet.add(opp.AccountId); 
                 opp.Opp_Is_Deleted__c = false;
                 contactTitle = 'VP Sales';
@@ -87,7 +89,9 @@ public with sharing class OpportunityHelper {
         }
         // If no opp:oppNew meets conditions then skip
         // if (contactTitle != 'empty') {
-            List<Contact> listContacts = [SELECT Id, FirstName, LastName, Title, AccountId FROM Contact WHERE AccountId IN :oppAccountIdSet AND Title = :contactTitle];
+        System.debug('oppAccountIdSet: ' + JSON.serializePretty(oppAccountIdSet));
+        System.debug('contactTitle: ' + contactTitle);    
+        List<Contact> listContacts = [SELECT Id, FirstName, LastName, Title, AccountId FROM Contact WHERE AccountId IN :oppAccountIdSet AND Title = :contactTitle];
             Map<String,String> acctIdToContactIdMap = new Map<String,String>();
             for (Contact cont : listContacts) {
                 acctIdToContactIdMap.put(cont.AccountId, cont.Id);
@@ -201,6 +205,7 @@ public with sharing class OpportunityHelper {
 
     // AFTER_UNDELETE
     public static void processUndeletedOpps(Map<Id, Opportunity> mapUndeletedOpps) {
+        System.debug('mapUndeletedOpps:' + JSON.serializePretty(mapUndeletedOpps));
         List<Opportunity> oppToProcess =[SELECT Id, Opp_Is_Deleted__c FROM Opportunity WHERE Id IN :mapUndeletedOpps.keySet()];
         for (Opportunity opp : oppToProcess) {
             opp.Opp_Is_Deleted__c = true; 
