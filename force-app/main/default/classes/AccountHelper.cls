@@ -40,11 +40,11 @@ public with sharing class AccountHelper {
 
     public static void addressCopy(List<Account> acc2TriggerNew) {
         for (Account acct : acc2TriggerNew) {
-            acct.BillingStreet = acct.ShippingStreet;
-            acct.BillingCity = acct.ShippingCity;
-            acct.BillingState = acct.ShippingState;
-            acct.BillingPostalCode = acct.ShippingPostalCode;
-            acct.BillingCountry = acct.ShippingCountry;            
+            if ( acct.ShippingStreet != null ) {acct.BillingStreet = acct.ShippingStreet;}
+            if ( acct.ShippingCity !=null ) {acct.BillingCity = acct.ShippingCity;}
+            if ( acct.ShippingState != null ) {acct.BillingState = acct.ShippingState;}
+            if ( acct.ShippingPostalCode != null ) {acct.BillingPostalCode = acct.ShippingPostalCode;}
+            if ( acct.ShippingCountry != null ) {acct.BillingCountry = acct.ShippingCountry;}            
         }
     }
     
@@ -59,19 +59,19 @@ public with sharing class AccountHelper {
     
     public static void defaultContact(List<Account> acc4TriggerNew) {
         
-        List<Contact> newContact = new List<Contact>();
+        List<Contact> newContacts = new List<Contact>();
         for (Account acct : acc4TriggerNew) {
             Contact newCont = new Contact();
             newCont.LastName = 'DefaultContact';
             newCont.Email = 'default@email.com';
             newCont.AccountId = acct.Id;    
-            newContact.add(newCont);
+            newContacts.add(newCont);
         }
 
         Database.DMLOptions dml = new Database.DMLOptions();
         dml.DuplicateRuleHeader.allowSave = true;
         dml.DuplicateRuleHeader.runAsCurrentUser = true;
-        Database.insert(newContact, dml);
+        Database.insert(newContacts, dml);
         
     }
 

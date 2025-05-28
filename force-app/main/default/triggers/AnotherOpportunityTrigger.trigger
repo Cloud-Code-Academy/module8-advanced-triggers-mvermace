@@ -20,39 +20,21 @@ https://developer.salesforce.com/blogs/developer-relations/2015/01/apex-best-pra
 */
 trigger AnotherOpportunityTrigger on Opportunity (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
     
-    if (Trigger.isInsert) {
-        if (Trigger.isBefore) {
-            OpportunityHelper.setOppType(Trigger.new);
-        }
-        if (Trigger.isAfter) {
-            OpportunityHelper.createTaskFromNewOpportunities(Trigger.new);
-        }
+    if (Trigger.isInsert && Trigger.isBefore) {
+        OpportunityHelper.setOppType(Trigger.new);
+    } else if (Trigger.isInsert && Trigger.isAfter) {
+        OpportunityHelper.createTaskFromNewOpportunities(Trigger.new);
+    } else if (Trigger.isUpdate && Trigger.isBefore) {
+        OpportunityHelper.setOppType(Trigger.new);
+        OpportunityHelper.appendStageNameToDescription(Trigger.new);
+        // OpportunityHelper.assignPrimaryContact(Trigger.new);
+        OpportunityHelper.setPrimaryContact(Trigger.new);
+    } else if (Trigger.isDelete && Trigger.isBefore) {
+        // OpportunityHelper.preventClosedOppDelete(Trigger.old);
+        OpportunityHelper.preventOppDelete(Trigger.old);
+    } else if (Trigger.isDelete && Trigger.isAfter) {
+        OpportunityHelper.notifyOwnersOpportunityDeleted(Trigger.old);
+    } else if (Trigger.isUndelete && Trigger.isAfter) {
+        OpportunityHelper.processUndeletedOpps(Trigger.newMap);
     }
-    
-    if (Trigger.isUpdate) {
-        if (Trigger.isBefore) {
-            OpportunityHelper.setOppType(Trigger.new);
-            OpportunityHelper.appendStageNameToDescription(Trigger.new);
-            // OpportunityHelper.assignPrimaryContact(Trigger.new);
-            OpportunityHelper.setPrimaryContact(Trigger.new);
-        }
-    }
-
-    if (Trigger.isDelete) {
-        if (Trigger.isBefore) {
-            // OpportunityHelper.preventClosedOppDelete(Trigger.old);
-            OpportunityHelper.preventOppDelete(Trigger.old);
-        }
-        if (Trigger.isAfter) {
-            OpportunityHelper.notifyOwnersOpportunityDeleted(Trigger.old);
-        }
-    }
-
-
-    if (Trigger.isUndelete) {
-        if (Trigger.isAfter) {      
-            OpportunityHelper.processUndeletedOpps(Trigger.newMap);
-        }
-    }
-
 }

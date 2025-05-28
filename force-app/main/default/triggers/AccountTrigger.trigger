@@ -17,16 +17,12 @@ For this lesson, students have two options:
 
 Let's dive into the specifics of each operation:
 */
-trigger AccountTrigger on Account (before insert, after insert, after undelete) {
-   if (Trigger.isInsert) {
-        if (Trigger.isBefore) {
-                AccountHelper.setTypeProspect(Trigger.new);
-                AccountHelper.addressCopy(Trigger.new);
-                AccountHelper.setRating(Trigger.new);
-        }
-
-        if (Trigger.isAfter) {
-            AccountHelper.defaultContact(Trigger.new);
-        }
+trigger AccountTrigger on Account (before insert, after insert) {
+    if ( Trigger.isInsert && Trigger.isBefore ) {
+        AccountHelper.setTypeProspect(Trigger.new);
+        AccountHelper.addressCopy(Trigger.new);
+        AccountHelper.setRating(Trigger.new);
+    } else if (Trigger.isInsert && Trigger.isAfter) {
+        AccountHelper.defaultContact(Trigger.new);
     }
 }
