@@ -8,3 +8,8 @@
 string tempvar = 'Enter_your_name_here';
 System.debug('Hello World!');
 System.debug('My name is ' + tempvar);
+
+Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+mail.setToAddresses(opp.OwnerId.toString());
+mail.setSubject('Opportunity Deleted : ' + opp.Name);
+mail.setPlainTextBody('Your Opportunity: ' + opp.Name +' has been deleted.');
